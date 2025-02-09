@@ -12,6 +12,11 @@ with open('xgb_model.pkl', 'rb') as file:
 scaler = joblib.load('scaler.pkl')
 encoders = joblib.load('encoders.pkl')
 
+
+@app.route('/')
+def home():
+    return '<h1>Fraud Detection</h1>'
+
 # Define the route for prediction
 @app.route('/predict', methods=['POST'])
 def predict():
