@@ -50,7 +50,7 @@ def predict():
     return jsonify(predictions.tolist())
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=8080, debug=True)
     print("Running")
 
 # curl -X POST http://127.0.0.1:5000/predict -H "Content-Type: application/json" -d @test_data.json
