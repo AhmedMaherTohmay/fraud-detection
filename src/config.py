@@ -16,7 +16,6 @@ PREDICTION_COLS = [
     'long',
     'merch_lat',
     'merch_long',
-    'unix_time'
 ]
 
 # Database
