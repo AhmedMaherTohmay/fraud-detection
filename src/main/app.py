@@ -1,10 +1,10 @@
-from flask import Flask, request, jsonify
 import pandas as pd
-from src.models.predict import FraudPredictor
-from src.config import PREDICTION_COLS
+# from src.models.predict import FraudPredictor
+from flask import Flask, request, jsonify
+from src.pipelines import process_json_and_search, predict_fraud
 
 app = Flask(__name__)
-predictor = FraudPredictor()
+# predictor = FraudPredictor()
 
 @app.route('/')
 def home():
@@ -28,17 +28,18 @@ def predict():
     """
     try:
         data = request.get_json()
+        print(data)
         if not data:
             return jsonify({"error": "No data provided"}), 400
-            
-        data = pd.DataFrame(data)
-        data = data[PREDICTION_COLS]  # Only keep required columns
+        
+        df = pd.read_csv('data/cleaned_train.csv')
+        data = process_json_and_search(data[0], df)
         
         # Get prediction (probability score)
-        score = predictor.predict(data)
+        score = predict_fraud(data)
         
         return jsonify({
-            "fraud_probability": float(score[0]),  # Convert numpy float to Python float
+            "fraud_probability": float(score[-1]),  # Convert numpy float to Python float
             "status": "success"
         })
         
