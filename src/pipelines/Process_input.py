@@ -1,22 +1,12 @@
 import pandas as pd
-import pymysql
-
-def create_db_connection(host, user, password, database):
-    connection = pymysql.connect(
-        host=host,
-        user=user,
-        password=password,
-        database=database
-    )
-    return connection
 
 # Function to process JSON data and combine it with train_df data
-def process_json_and_search(json_data, train_df):
+def process_json_and_search(json_data, data):
     # Convert JSON data to a DataFrame
     input_data = pd.DataFrame([json_data])
 
     # Ensure datetime format
-    train_df['trans_date_trans_time'] = pd.to_datetime(train_df['trans_date_trans_time'])
+    data['trans_date_trans_time'] = pd.to_datetime(data['trans_date_trans_time'])
     input_data['trans_date_trans_time'] = pd.to_datetime(input_data['trans_date_trans_time'])
 
     # Extract cc_num and timestamp
@@ -24,12 +14,12 @@ def process_json_and_search(json_data, train_df):
     current_time = input_data.loc[0, 'trans_date_trans_time']
 
     # Check for existing records
-    if cc_num in train_df['cc_num'].values:
+    if cc_num in data['cc_num'].values:
         # Filter records for this cc_num in the last 24h
-        last_24h_records = train_df[
-            (train_df['cc_num'] == cc_num) &
-            (train_df['trans_date_trans_time'] >= current_time - pd.Timedelta(hours=24)) &
-            (train_df['trans_date_trans_time'] < current_time)
+        last_24h_records = data[
+            (data['cc_num'] == cc_num) &
+            (data['trans_date_trans_time'] >= current_time - pd.Timedelta(hours=24)) &
+            (data['trans_date_trans_time'] < current_time)
         ]
         return pd.concat([last_24h_records, input_data], ignore_index=True)
     else:
@@ -37,16 +27,6 @@ def process_json_and_search(json_data, train_df):
 
 
 if __name__ == "__main__":
-    # # Connect to the database and fetch data into train_df
-    # connection = create_db_connection('localhost', 'username', 'password', 'database_name')
-    
-    # # SQL query to fetch the necessary data
-    # query = "SELECT * FROM transactions;"  # Replace with your table and columns
-    # train_df = pd.read_sql(query, connection)
-    
-    # # Close the connection
-    # connection.close()
-    
     # Load train_df
     train_df = pd.read_csv('data/cleaned_train.csv')
     
