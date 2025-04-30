@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 import joblib
-from src.pipelines.featuers_pipeline import final_pipeline
 
 # Transform scores to make fraud cases have higher values
 def transform_scores(scores):
@@ -20,17 +19,17 @@ def transform_scores(scores):
     return normalized
 
 def predict_fraud(df):
-    transformed_df = final_pipeline(df)
+    pipeline = joblib.load('artifacts/preprocessing_pipeline.pkl')
+    transformed_df = pipeline.transform(df)
+    transformed_df.drop(columns=['is_fraud'], inplace=True)
     # Load the saved model
-    iso_forest_loaded = joblib.load("../artifacts/iso_forest_model.pkl")
+    iso_forest_loaded = joblib.load("artifacts/iso_forest_model.pkl")
     # Make predictions
     val_scores = iso_forest_loaded.decision_function(transformed_df)
     val_proba = transform_scores(val_scores)
     return val_proba
 
 if __name__ == "__main__":
-    df = pd.read_csv('../data/fraudTest.csv')
-    cols_toKeep = ['cc_num', 'trans_date_trans_time',  'category', 'amt', 'lat', 'long', 'merch_lat', 'merch_long', 'unix_time']
-    df = df[cols_toKeep]
+    df = pd.read_csv('data/cleaned_test.csv')
     val_proba = predict_fraud(df)
     print(val_proba[-1])
