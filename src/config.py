@@ -1,3 +1,4 @@
+import pymysql.cursors
 # File paths
 DATA_PATH = "data/cleaned_train.csv"
 
@@ -17,3 +18,13 @@ PREDICTION_COLS = [
     'merch_long',
     'unix_time'
 ]
+
+# Database
+DB_CONFIG = {
+    'host': 'localhost',
+    'user': 'your_username',
+    'password': 'your_password',
+    'database': 'fraud_detection',
+    'charset': 'utf8mb4',
+    'cursorclass': pymysql.cursors.DictCursor
+}
