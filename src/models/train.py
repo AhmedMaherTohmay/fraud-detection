@@ -54,3 +54,4 @@ if __name__ == "__main__":
     print("Training model...")
     train_model()
     print("Training completed. Run evaluation separately.")
+#mlflow server --backend-store-uri file:./mlruns --default-artifact-root./mlruns
