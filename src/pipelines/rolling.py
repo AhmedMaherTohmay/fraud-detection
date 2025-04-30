@@ -10,10 +10,10 @@ class AddAverageColumns(BaseEstimator, TransformerMixin):
     def transform(self, X):
         # Ensure data is sorted by credit card and transaction time
         df = X.copy()
-        df = df.sort_values(by=['cc_num', 'trans_date_trans_time']).reset_index(drop=True)
         
-        # Convert to datetime if not already
+        # Convert to datetime if not already and sort by cc_num and trans_date_trans_time
         df['trans_date_trans_time'] = pd.to_datetime(df['trans_date_trans_time'])
+        df = df.sort_values(by=['cc_num', 'trans_date_trans_time']).reset_index(drop=True)
         
         # Temporarily set datetime as index for rolling calculations
         original_index = df.index
