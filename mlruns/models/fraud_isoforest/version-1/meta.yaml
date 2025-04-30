@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1745941594080
+current_stage: None
+description: null
+last_updated_timestamp: 1745941594080
+name: fraud_isoforest
+run_id: cb7a0063d6a246b7a9b0561e5b0b8b05
+run_link: null
+source: file:///D:/final project/FruadDetection/mlruns/780391087486925493/cb7a0063d6a246b7a9b0561e5b0b8b05/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///D:/final project/FruadDetection/mlruns/780391087486925493/cb7a0063d6a246b7a9b0561e5b0b8b05/artifacts/model
+user_id: null
+version: 1

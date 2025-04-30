@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/final project/FruadDetection/mlruns/780391087486925493/de1e2a2aca944f9aacbfaa0f61db24ee/artifacts
+end_time: 1745941197271
+entry_point_name: ''
+experiment_id: '780391087486925493'
+lifecycle_stage: active
+run_id: de1e2a2aca944f9aacbfaa0f61db24ee
+run_name: redolent-penguin-175
+run_uuid: de1e2a2aca944f9aacbfaa0f61db24ee
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1745941196341
+status: 4
+tags: []
+user_id: ELmohannd
