@@ -1,4 +1,3 @@
-import pymysql.cursors
 # File paths
 TRAIN_DATA_PATH = "data/cleaned_train.csv"
 TEST_DATA_PATH = "data/cleaned_test.csv"
@@ -22,9 +21,8 @@ PREDICTION_COLS = [
 # Database
 DB_CONFIG = {
     'host': 'localhost',
-    'user': 'your_username',
-    'password': 'your_password',
-    'database': 'fraud_detection',
-    'charset': 'utf8mb4',
-    'cursorclass': pymysql.cursors.DictCursor
+    'dbname':'postgres',
+    'user': 'postgres',
+    'password': 'root',
+    'port' : '5432'
 }
