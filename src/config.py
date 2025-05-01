@@ -1,7 +1,8 @@
 # src/config.py
 
 # Data paths
-DATA_PATH = "data/cleaned_train.csv"
+DATA_PATH_TRAIN = "data/cleaned_train.csv"
+DATA_PATH_TEST = "data/cleaned_test.csv"
 
 # Model config
 MODEL_CONFIG = {

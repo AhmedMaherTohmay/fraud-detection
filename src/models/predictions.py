@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import joblib
-
+from src.config import DATA_PATH_TEST
 # Transform scores to make fraud cases have higher values
 def transform_scores(scores):
     """
@@ -33,6 +33,7 @@ def predict_fraud(df):
     return val_proba
 
 if __name__ == "__main__":
-    df = pd.read_csv("data/cleaned_test.csv")
+    # Inspect the transformed data
+    df = pd.read_csv(DATA_PATH_TEST)
     val_proba = predict_fraud(df)
     print(val_proba[-1])

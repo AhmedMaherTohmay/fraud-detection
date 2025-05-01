@@ -4,12 +4,12 @@ import joblib
 import pickle
 from sklearn.ensemble import IsolationForest
 from sklearn.model_selection import train_test_split
-from src.config import DATA_PATH
+from src.config import DATA_PATH_TRAIN
 
 def train_model():
     
     # Load and preprocess data
-    df = pd.read_csv(DATA_PATH)
+    df = pd.read_csv(DATA_PATH_TRAIN)
     pipeline = joblib.load("artifacts\preprocessing_pipeline.pkl")
     features = pipeline.transform(df)
     
