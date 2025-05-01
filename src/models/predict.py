@@ -1,53 +1,38 @@
-import mlflow
 import numpy as np
-from src.config import MODEL_NAME
+import pandas as pd
+import joblib
 
-class FraudPredictor:
-    """Wrapper for fraud detection model with score transformation."""
+# Transform scores to make fraud cases have higher values
+def transform_scores(scores):
+    """
+    Convert Isolation Forest scores to fraud scores where:
+    - Higher values indicate higher probability of fraud
+    - Scores range from 0 (normal) to 100 (definite fraud)
+    """
+    # Shift scores so anomalies are positive
+    shifted = -scores  # Invert the scores
     
-    def __init__(self, model_name=MODEL_NAME, stage="Production"):
-        """Initialize predictor with MLflow model.
-        
-        Args:
-            model_name: Name of registered MLflow model
-            stage: Model stage (Production/Staging/None)
-        """
-        mlflow.set_tracking_uri("file:./mlruns")
-        self.model = mlflow.sklearn.load_model(
-            f"models:/{model_name}/{stage}"
-        )
+    # Normalize to 0-100 range
+    min_score, max_score = np.min(shifted), np.max(shifted)
+    normalized = 100 * (shifted - min_score) / (max_score - min_score)
+    
+    return normalized
 
-    def transform_scores(self, scores):
-        """Transform anomaly scores to 0-100 probability-like scale.
-        
-        Args:
-            scores: Raw anomaly scores from model
-            
-        Returns:
-            Scores scaled to 0-100 range
-        """
-        shifted = -scores  # Convert to positive where higher = more anomalous
-        min_score = np.min(shifted)
-        max_score = np.max(shifted)
-        return 100 * (shifted - min_score) / (max_score - min_score + 1e-10)
+def predict_fraud(df):
+    # Load and preprocess data
+    pipeline = joblib.load('artifacts/preprocessing_pipeline.pkl')
+    transformed_df = pipeline.transform(df)
+    transformed_df.drop(columns=['is_fraud'], inplace=True)
+    
+    # Load the saved model
+    iso_forest_loaded = joblib.load("artifacts/iso_forest_model.pkl")
+    
+    # Make predictions
+    val_scores = iso_forest_loaded.decision_function(transformed_df)
+    val_proba = transform_scores(val_scores)
+    return val_proba
 
-    def predict(self, features):
-        """Predict fraud probability for given features.
-        
-        Args:
-            features: DataFrame with transaction features
-            
-        Returns:
-            Array of fraud probabilities (0-100)
-        """
-        scores = self.model.decision_function(features)
-        return self.transform_scores(scores)
-
-# Example usage
 if __name__ == "__main__":
-    print("Testing FraudPredictor...")
-    predictor = FraudPredictor()
-    
-    # Mock data - in practice you'd use real features
-    mock_features = np.random.rand(1, 10)  
-    print(f"Sample prediction: {predictor.predict(mock_features)}")
+    df = pd.read_csv("data/cleaned_test.csv")
+    val_proba = predict_fraud(df)
+    print(val_proba[-1])
