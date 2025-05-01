@@ -1,6 +1,7 @@
 import pymysql.cursors
 # File paths
-DATA_PATH = "data/cleaned_train.csv"
+TRAIN_DATA_PATH = "data/cleaned_train.csv"
+TEST_DATA_PATH = "data/cleaned_test.csv"
 
 # Model configuration
 MODEL_NAME = "fraud_isoforest"
