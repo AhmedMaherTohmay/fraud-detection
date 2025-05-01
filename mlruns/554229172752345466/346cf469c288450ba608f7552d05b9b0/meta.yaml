@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/554229172752345466/346cf469c288450ba608f7552d05b9b0/artifacts
+end_time: 1746113957494
+entry_point_name: ''
+experiment_id: '554229172752345466'
+lifecycle_stage: active
+run_id: 346cf469c288450ba608f7552d05b9b0
+run_name: Isolation Forest
+run_uuid: 346cf469c288450ba608f7552d05b9b0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1746113198698
+status: 3
+tags: []
+user_id: ELmohannd

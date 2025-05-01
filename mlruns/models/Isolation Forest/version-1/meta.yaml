@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1746113957454
+current_stage: None
+description: ''
+last_updated_timestamp: 1746113957454
+name: Isolation Forest
+run_id: 346cf469c288450ba608f7552d05b9b0
+run_link: ''
+source: mlflow-artifacts:/554229172752345466/346cf469c288450ba608f7552d05b9b0/artifacts/model
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/554229172752345466/346cf469c288450ba608f7552d05b9b0/artifacts/model
+user_id: null
+version: 1

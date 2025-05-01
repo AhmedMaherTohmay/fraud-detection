@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/554229172752345466/ab5ab2c74328435bbceecc8ebd031526/artifacts
+deleted_time: 1746113196444
+end_time: 1746113078234
+entry_point_name: ''
+experiment_id: '554229172752345466'
+lifecycle_stage: deleted
+run_id: ab5ab2c74328435bbceecc8ebd031526
+run_name: Isolation Forest
+run_uuid: ab5ab2c74328435bbceecc8ebd031526
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1746113066881
+status: 3
+tags: []
+user_id: ELmohannd
