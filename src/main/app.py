@@ -1,11 +1,8 @@
 import pandas as pd
-# from src.models.predict import FraudPredictor
 from flask import Flask, request, jsonify
 from src.pipelines import process_json_and_search
-from src.models.predict import predict_fraud
-
+from src.models import predict_fraud
 app = Flask(__name__)
-# predictor = FraudPredictor()
 
 @app.route('/')
 def home():
