@@ -36,7 +36,7 @@ cur.execute("""
 DROP TABLE IF EXISTS transaction_info, transactions, customer_info, merchant_info CASCADE;
 
 CREATE TABLE customer_info (
-    CustomerID INT PRIMARY KEY,
+    CustomerID INT PRIMARY KEY NOT NULL, 
     Name TEXT,
     Age INT,
     Address TEXT,
@@ -45,13 +45,13 @@ CREATE TABLE customer_info (
 );
 
 CREATE TABLE merchant_info (
-    MerchantID INT PRIMARY KEY,
+    MerchantID INT PRIMARY KEY NOT NULL,
     MerchantName TEXT,
     Location TEXT
 );
 
 CREATE TABLE transactions (
-    TransactionID INT PRIMARY KEY,
+    TransactionID INT PRIMARY KEY NOT NULL,
     Timestamp TIMESTAMP,
     CustomerID INT REFERENCES customer_info(CustomerID),
     MerchantID INT REFERENCES merchant_info(MerchantID),
