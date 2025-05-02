@@ -2,15 +2,21 @@
 import pandas as pd
 import psycopg2
 
-# Load data with updated paths
-metadata_df = pd.read_csv('data/Transaction Data/transaction_metadata.csv')
-records_df = pd.read_csv('data/Transaction Data/transaction_records.csv')
-activity_df = pd.read_csv('data/Customer Profiles/account_activity.csv')
-customer_df = pd.read_csv('data/Customer Profiles/customer_data.csv')
-merchant_df = pd.read_csv('data/Merchant Information/merchant_data.csv')
-category_df = pd.read_csv('data/Merchant Information/transaction_category_labels.csv')
-amount_df = pd.read_csv('data/Transaction Amounts/amount_data.csv')
-anomaly_df = pd.read_csv('data/Transaction Amounts/anomaly_scores.csv')
+# Load data
+metadata_df = pd.read_csv('../../data/Transaction Data/transaction_metadata.csv')
+records_df = pd.read_csv('../../data/Transaction Data/transaction_records.csv')
+activity_df = pd.read_csv('../../data/Customer Profiles/account_activity.csv')
+customer_df = pd.read_csv('../../data/Customer Profiles/customer_data.csv')
+merchant_df = pd.read_csv('../../data/Merchant Information/merchant_data.csv')
+category_df = pd.read_csv('../../data/Merchant Information/transaction_category_labels.csv')
+amount_df = pd.read_csv('../../data/Transaction Amounts/amount_data.csv')
+anomaly_df = pd.read_csv('../../data/Transaction Amounts/anomaly_scores.csv')
+coords_df = pd.read_csv('../../data/Sample_Data.csv')[['merch_lat', 'merch_long']].drop_duplicates().reset_index(drop=True)
+
+# Assign a unique lat/lon to each merchant
+merchant_df = merchant_df.copy()
+merchant_df['MerchantLat'] = coords_df['merch_lat'][:len(merchant_df)].values
+merchant_df['MerchantLon'] = coords_df['merch_long'][:len(merchant_df)].values
 
 # Merge customer and account activity
 customer_info_df = pd.merge(customer_df, activity_df, on='CustomerID')
@@ -31,7 +37,7 @@ conn = psycopg2.connect(
 )
 cur = conn.cursor()
 
-# Create tables
+# Create tables with merchant lat/lon
 cur.execute("""
 DROP TABLE IF EXISTS transaction_info, transactions, customer_info, merchant_info CASCADE;
 
@@ -47,7 +53,8 @@ CREATE TABLE customer_info (
 CREATE TABLE merchant_info (
     MerchantID INT PRIMARY KEY NOT NULL,
     MerchantName TEXT,
-    Location TEXT
+    MerchantLat FLOAT,
+    MerchantLon FLOAT
 );
 
 CREATE TABLE transactions (
@@ -74,8 +81,11 @@ for _, row in customer_info_df.iterrows():
 
 for _, row in merchant_df.iterrows():
     cur.execute("""
-        INSERT INTO merchant_info VALUES (%s, %s, %s)
-    """, tuple(row))
+        INSERT INTO merchant_info VALUES (%s, %s, %s, %s)
+    """, (
+        row['MerchantID'], row['MerchantName'],
+        row['MerchantLat'], row['MerchantLon']
+    ))
 
 for _, row in transaction_info_df.iterrows():
     cur.execute("""
@@ -95,7 +105,4 @@ for _, row in transaction_info_df.iterrows():
 conn.commit()
 cur.close()
 conn.close()
-print("Database populated successfully.")
-
-
-#$env:Path += ";C:\Program Files\PostgreSQL\17\bin"
+print("Database populated successfully with merchant coordinates.")
