@@ -1,20 +1,38 @@
-# Use an official Python runtime as a parent image
+# Use the official Python image from the Docker Hub
 FROM python:3.10-slim
 
-# Set current working directory
-WORKDIR /usr/FraudDetection
+# Set the working directory in the container
+WORKDIR /app
 
-# Copy only the requirements.txt initially
-COPY requirements.txt /usr/FraudDetection/
+# Install the required system dependencies for building Python packages efficiently
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    g++ \
+    libatlas-base-dev \
+    build-essential \
+    git-lfs
 
-# Install the required libraries (will only run if requirements.txt changes)
-RUN pip install --no-cache-dir -r requirements.txt
+# Initialize Git LFS
+RUN git lfs install
 
-# Copy the rest of the project files
-COPY . /usr/FraudDetection/
+# Copy the requirements.txt into the container
+COPY requirements.txt .  
 
-# Expose the port within Docker
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt  # Fixed typo!
+
+# Copy the rest of the application code into the container
+COPY . .
+
+# Ensure LFS files are properly pulled & checked out
+RUN git lfs fetch && git lfs checkout
+
+# Expose port 5000 for Flask
 EXPOSE 5000
 
-# Container start-up command
-CMD ["python3", "app.py"]
+# Set environment variables for Flask
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
+
+# Command to run the Flask app
+CMD ["python", "app.py"]
