@@ -12,7 +12,7 @@ WORKDIR /usr/FraudDetection
 # Copy only the requirements.txt initially
 COPY requirements.txt /usr/FraudDetection/
 
-# Install the required libraries (will only run if requirements.txt changes)
+# Install the required libraries 
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the project files
@@ -24,5 +24,5 @@ RUN git lfs fetch && git lfs checkout
 # Expose the port within Docker
 EXPOSE 5000
 
-# Container start-up command
-CMD ["python3", "app.py"]
+# Use Gunicorn to run the Flask app
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
