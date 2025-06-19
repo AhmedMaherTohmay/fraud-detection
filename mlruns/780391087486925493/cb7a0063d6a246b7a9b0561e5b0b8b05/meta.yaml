@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/final project/FruadDetection/mlruns/780391087486925493/cb7a0063d6a246b7a9b0561e5b0b8b05/artifacts
+end_time: 1745966318242
+entry_point_name: ''
+experiment_id: '780391087486925493'
+lifecycle_stage: active
+run_id: cb7a0063d6a246b7a9b0561e5b0b8b05
+run_name: gentle-owl-39
+run_uuid: cb7a0063d6a246b7a9b0561e5b0b8b05
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1745941585073
+status: 3
+tags: []
+user_id: ELmohannd
