@@ -1,37 +1,25 @@
 # src/monitoring/drift_evidently.py
 from evidently.report import Report
-from evidently.metric_preset import DataDriftPreset
+from evidently.metric_preset import DataDriftPreset, DataQualityPreset
+from evidently.metrics import *
 import pandas as pd
 import os
 from datetime import datetime
-
-# Your drift-relevant features
-DRIFT_FEATURES = [
-    'amt',
-    'category',
-]
+from IPython.display import display, HTML
+from src.config import DRIFT_FEATURES
 
 def run_drift_report(train_df: pd.DataFrame, recent_df: pd.DataFrame, output_html: str = None):
-    """
-    Generates a drift report comparing recent data to training data.
-    Returns:
-        - drift_detected (bool)
-        - report_json (dict)
-    """
-    # Only use relevant features
     train = train_df[DRIFT_FEATURES].copy()
     recent = recent_df[DRIFT_FEATURES].copy()
 
-    # Build the report
     report = Report(metrics=[DataDriftPreset()])
     report.run(reference_data=train, current_data=recent)
 
-    # Save report to HTML if path is given
     if output_html:
         os.makedirs(os.path.dirname(output_html), exist_ok=True)
         report.save_html(output_html)
+        display(HTML(filename=output_html))  # Display dashboard directly
 
-    # Check if drift was detected
     drift_result = report.as_dict()
     drift_detected = drift_result['metrics'][0]['result']['dataset_drift']
 
@@ -42,5 +30,6 @@ if __name__ == "__main__":
     # Example usage
     train_df = pd.read_csv('data/cleaned_train.csv')
     recent_df = pd.read_csv('data/cleaned_test.csv')
-    drift_detected, report_json = run_drift_report(train_df, recent_df)
+    output_path = "../artifacts/data_drift_report.html"
+    drift_detected, drift_result = run_drift_report(train_df, recent_df, output_html=output_path)
     print(f"Drift detected: {drift_detected}")
