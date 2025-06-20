@@ -13,17 +13,14 @@ def process_json_and_search(json_data, data):
     cc_num = input_data.loc[0, 'cc_num']
     current_time = input_data.loc[0, 'trans_date_trans_time']
 
-    # Check for existing records
-    if cc_num in data['cc_num'].values:
-        # Filter records for this cc_num in the last 24h
-        last_24h_records = data[
-            (data['cc_num'] == cc_num) &
-            (data['trans_date_trans_time'] >= current_time - pd.Timedelta(hours=24)) &
-            (data['trans_date_trans_time'] < current_time)
-        ]
-        return pd.concat([last_24h_records, input_data], ignore_index=True)
-    else:
-        return f"No records found for cc_num: {cc_num}"
+
+    last_24h_records = data[
+        (data['cc_num'] == cc_num) &
+        (data['trans_date_trans_time'] >= current_time - pd.Timedelta(hours=24)) &
+        (data['trans_date_trans_time'] < current_time)
+    ]
+    return pd.concat([last_24h_records, input_data], ignore_index=True)
+
 
 
 if __name__ == "__main__":

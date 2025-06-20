@@ -31,5 +31,9 @@ PREDICTION_COLS = [
     'merch_long'
 ]
 
+DRIFT_FEATURES = [
+    'amt',
+]   
+
 # Explicit exports
-__all__ = ['DATA_PATH', 'MODEL_CONFIG', 'DB_CONFIG', 'PREDICTION_COLS']
+__all__ = ['DATA_PATH', 'MODEL_CONFIG', 'DB_CONFIG', 'PREDICTION_COLS', 'DRIFT_FEATURES']
