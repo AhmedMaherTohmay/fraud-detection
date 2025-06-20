@@ -2,6 +2,7 @@
 import pandas as pd
 import joblib
 import pickle
+import json
 from sklearn.ensemble import IsolationForest
 from sklearn.model_selection import train_test_split
 from src.config import DATA_PATH_TRAIN
@@ -10,7 +11,7 @@ def train_model():
     
     # Load and preprocess data
     df = pd.read_csv(DATA_PATH_TRAIN)
-    pipeline = joblib.load("artifacts\preprocessing_pipeline.pkl")
+    pipeline = joblib.load("artifacts/preprocessing_pipeline.pkl")
     features = pipeline.transform(df)
     
     # Split data
@@ -32,9 +33,15 @@ def train_model():
     # Train model
     model = IsolationForest(**params)
     model.fit(X_train)
+    scores = model.decision_function(X_train)
+    
+    max_score = scores.max()
+    min_score = scores.min()
+    with open("artifacts/scores.json", "w") as f:
+        json.dump({"max_score": max_score, "min_score": min_score}, f, indent=2)
     
     # Save model locally
-    model_path = f"artificats/{model}.pkl"
+    model_path = f"artifacts/iso_forest_model.pkl"
     with open(model_path, "wb") as f:
         pickle.dump(model, f)
     
