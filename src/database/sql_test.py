@@ -2,6 +2,7 @@ import psycopg2
 import os
 import pandas as pd
 from sqlalchemy import create_engine, text
+from src.config import DB_PARAMS
 
 #  $env:Path += ";C:\Program Files\PostgreSQL\17\bin"
 
@@ -9,15 +10,6 @@ from sqlalchemy import create_engine, text
 DB_URL = "postgresql+psycopg2://postgres:@localhost:5432/fraud"
 engine = create_engine(DB_URL)
 
-
-# You can adjust these as needed
-DB_PARAMS = dict(
-    dbname='fraud',
-    user='postgres',
-    password='',      # your password if any
-    host='localhost',
-    port=5432
-)
 
 def check_sql():
     conn=psycopg2.connect(**DB_PARAMS)

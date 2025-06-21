@@ -1,4 +1,10 @@
 # src/config.py
+import os
+from dotenv import load_dotenv
+
+# Get the absolute path to the root directory
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(dotenv_path=os.path.join(BASE_DIR, ".env"))
 
 # Data paths
 DATA_PATH_TRAIN = "data/cleaned_train.csv"
@@ -11,13 +17,17 @@ MODEL_CONFIG = {
 }
 
 # Database config
-DB_CONFIG = {
-    'host': 'localhost',
-    'dbname': 'postgres',
+# config.py
+
+DB_PARAMS = {
+    'dbname': 'fraud',
     'user': 'postgres',
-    'password': 'root',
-    'port': '5432'
+    'password': os.environ.get('DB_PASSWORD'),  # Add your real password here if needed
+    'host': 'localhost',
+    'port': 5432
 }
+print(DB_PARAMS)
+
 
 # Prediction columns
 PREDICTION_COLS = [

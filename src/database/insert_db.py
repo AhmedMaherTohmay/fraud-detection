@@ -1,20 +1,13 @@
 import psycopg2
 import os
+from src.config import DATA_PATH_TRAIN, DB_PARAMS
 
-DB_PARAMS = dict(
-    dbname='fraud',
-    user='postgres',
-    password='',      # your password if any
-    host='localhost',
-    port=5432
-)
 
-DATA_FILE = os.path.join("..", "..", "data", "cleaned_train.csv")
 TEMP_FILE = "temp_batch.csv"  # File we create for COPY
 
 def preprocess_and_copy(limit=100):
     # Write only the desired number of data rows (skip header, drop is_fraud)
-    with open(DATA_FILE, 'r') as infile, open(TEMP_FILE, 'w') as outfile:
+    with open(DATA_PATH_TRAIN, 'r') as infile, open(TEMP_FILE, 'w') as outfile:
         header = infile.readline()  # Skip header
         written = 0
         for line_num, line in enumerate(infile, start=2):

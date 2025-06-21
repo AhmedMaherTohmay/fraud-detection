@@ -2,15 +2,8 @@ import psycopg2
 from sqlalchemy import create_engine, MetaData, Table, Column, Boolean, Integer, Float, Date, DateTime, ForeignKey, text
 import insert_db
 import sql_test
+from src.config import DB_PARAMS
 
-
-DB_PARAMS = dict(
-    dbname='fraud',
-    user='postgres',
-    password='',      # your password if any
-    host='localhost',
-    port=5432
-)
 
 def main():
     try:
@@ -77,7 +70,8 @@ def create_feature_store():
 #______________________________________________________________________________________________________________________#
 
 def create_feature_lake():
-    DB_URL = 'postgresql+psycopg2://postgres:@localhost:5432/fraud'
+    password = DB_PARAMS['password']
+    DB_URL = f'postgresql+psycopg2://postgres:{password}@localhost:5432/fraud'
     engine = create_engine(DB_URL)
     metadata = MetaData()
 
