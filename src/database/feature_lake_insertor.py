@@ -40,6 +40,27 @@ def insert_into_feature_lake(transformed_df):
         # Convert date for PostgreSQL
         df["date_index"] = pd.to_datetime(df["date_index"]).dt.date
 
+        # Robust boolean casting for specific columns
+        BOOL_COLS = ["D_Evening", "D_Morning", "D_Night"]
+        def force_bool(val):
+            if pd.isnull(val):
+                return None
+            if isinstance(val, bool):
+                return val
+            if isinstance(val, (float, int)):
+                return bool(int(val))
+            if isinstance(val, str):
+                s = val.strip().lower()
+                if s in ("1", "true", "yes", "y", "t"):
+                    return True
+                if s in ("0", "false", "no", "n", "f"):
+                    return False
+            # fallback: Python truthiness
+            return bool(val)
+        for col in BOOL_COLS:
+            if col in df.columns:
+                df[col] = df[col].apply(force_bool)
+
         date_val = df["date_index"].iloc[0]
         try:
             ensure_date_exists(engine, date_val)

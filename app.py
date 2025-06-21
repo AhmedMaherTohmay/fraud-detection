@@ -33,7 +33,7 @@ def predict():
             return jsonify({"error": "No data provided"}), 400
         
         #df = pd.read_csv('data/cleaned_train.csv')
-        data, exists = process_json_and_search(data[0])
+        data, exists = process_json_and_search(data[2])
         print(data)
         
         # Get prediction if this isn't a first time transaction (probability score)
