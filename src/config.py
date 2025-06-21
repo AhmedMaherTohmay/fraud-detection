@@ -3,6 +3,7 @@
 # Data paths
 DATA_PATH_TRAIN = "data/cleaned_train.csv"
 DATA_PATH_TEST = "data/cleaned_test.csv"
+TEST_JSON = "test_data.json"
 
 # Model config
 MODEL_CONFIG = {
@@ -15,7 +16,7 @@ DB_CONFIG = {
     'host': 'localhost',
     'dbname': 'postgres',
     'user': 'postgres',
-    'password': '',
+    'password': 'root',
     'port': '5432'
 }
 
@@ -31,5 +32,9 @@ PREDICTION_COLS = [
     'merch_long'
 ]
 
+DRIFT_FEATURES = [
+    'amt',
+]   
+
 # Explicit exports
-__all__ = ['DATA_PATH', 'MODEL_CONFIG', 'DB_CONFIG', 'PREDICTION_COLS']
+__all__ = ['DATA_PATH', 'MODEL_CONFIG', 'DB_CONFIG', 'PREDICTION_COLS', 'DRIFT_FEATURES']

@@ -12,4 +12,6 @@ pandas==2.2.2
 flasgger==0.9.5
 joblib
 
-#$env:Path += ";C:\Program Files\PostgreSQL\17\bin"
+'''
+$env:Path += ";C:\Program Files\PostgreSQL\17\bin"
+'''

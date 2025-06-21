@@ -57,7 +57,7 @@ def sql_command():
 def get_recent_transactions(cc_num):
     conn=psycopg2.connect(**DB_PARAMS)
     cur=conn.cursor()
-    external_ts = "2019-08-07 12:14:33"
+    external_ts = "2019-06-22 00:00:00"
     with conn.cursor() as cur:
         cur.execute("""
             SELECT *
@@ -93,10 +93,21 @@ def Check_Frames(cc_num):
             ORDER BY trans_date_trans_time DESC
         """), conn, params={"ccnum": cc_num})
     return frame  # Return the DataFrame
-       
+
+def show_feature_lake():
+    # connect to Database
+    with engine.connect() as conn:
+        frame = pd.read_sql_query(text("""
+            SELECT *
+            FROM feature_lake
+            
+        """), conn)
+    return print(frame)  # Return the DataFrame
+
 
 if __name__ == '__main__':
     #frame = Check_Frames(4992346398065154184)#3576431665303017)
     #print(frame.head(), frame.info(), '\n',not frame.empty)
     
     get_recent_transactions(3576431665303017)
+    show_feature_lake()

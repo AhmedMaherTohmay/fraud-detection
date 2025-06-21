@@ -1,5 +1,5 @@
 import psycopg2
-from sqlalchemy import create_engine, MetaData, Table, Column, Boolean, BigInteger, Float
+from sqlalchemy import create_engine, MetaData, Table, Column, Boolean, Integer, Float, Date, DateTime, ForeignKey, text
 import insert_db
 import sql_test
 
@@ -79,37 +79,53 @@ def create_feature_store():
 def create_feature_lake():
     DB_URL = 'postgresql+psycopg2://postgres:@localhost:5432/fraud'
     engine = create_engine(DB_URL)
-    
     metadata = MetaData()
 
-    your_table = Table(
+    # Table for unique dates
+    dates = Table(
+        'dates', metadata,
+        Column('date_index', Date, primary_key=True)
+    )
+
+    # Feature table referencing dates
+    feature_lake = Table(
         'feature_lake', metadata,
+        Column('id', Integer, primary_key=True, autoincrement=True),  # surrogate PK (fine to keep; helps future-proofing)
+        Column('date_index', Date, ForeignKey('dates.date_index', ondelete='CASCADE'), index=True),
+        Column('time_stamp', DateTime),
         Column('last_hour_count', Float),
         Column('last_hour_avg', Float),
         Column('last_24h_count', Float),
         Column('last_24h_avg', Float),
         Column('dist', Float),
         Column('dist_diff', Float),
-        Column('D_Evening', BigInteger),
+        Column('D_Evening', Boolean),
         Column('D_Morning', Boolean),
-        Column('D_Night', BigInteger),
-        Column('category_food_dining', BigInteger),
-        Column('category_gas_transport', BigInteger),
-        Column('category_grocery_net', BigInteger),
-        Column('category_grocery_pos', BigInteger),
-        Column('category_health_fitness', BigInteger),
-        Column('category_home', BigInteger),
-        Column('category_kids_pets', BigInteger),
-        Column('category_misc_net', BigInteger),
-        Column('category_misc_pos', BigInteger),
-        Column('category_personal_care', BigInteger),
-        Column('category_shopping_net', BigInteger),
-        Column('category_shopping_pos', BigInteger),
-        Column('category_travel', BigInteger)
+        Column('D_Night', Boolean),
+        Column('category_food_dining', Integer),
+        Column('category_gas_transport', Integer),
+        Column('category_grocery_net', Integer),
+        Column('category_grocery_pos', Integer),
+        Column('category_health_fitness', Integer),
+        Column('category_home', Integer),
+        Column('category_kids_pets', Integer),
+        Column('category_misc_net', Integer),
+        Column('category_misc_pos', Integer),
+        Column('category_personal_care', Integer),
+        Column('category_shopping_net', Integer),
+        Column('category_shopping_pos', Integer),
+        Column('category_travel', Integer)
     )
-    
-    metadata.create_all(engine)
-    print("Feature_lake Created!")
+
+    # Drop and recreate (order is important: drop child before parent!)
+    with engine.begin() as conn:
+        feature_lake.drop(conn, checkfirst=True)
+        dates.drop(conn, checkfirst=True)
+        metadata.create_all(conn)
+        print("Tables in database after creation:",
+          conn.execute(
+              text("SELECT tablename FROM pg_tables WHERE schemaname='public'")
+          ).fetchall())
     
 
 

@@ -49,6 +49,7 @@ def preprocess_and_copy(limit=100):
     conn.close()
     print(f"Loaded {written} records into transactions table (using COPY).")
     os.remove(TEMP_FILE)  # Clean up temp file
+    
 
 if __name__ == '__main__':
     preprocess_and_copy()

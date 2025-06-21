@@ -1,12 +1,11 @@
 [
-    
     {
-        "trans_date_trans_time": "2019-08-07 20:33:32",
+        "trans_date_trans_time": "2019-08-05 16:24:36",
         "cc_num": 3576431665303017,
-        "category": "grocery_net",
-        "amt": 3.98,
-        "lat": 38.3207,
-        "long": -111.4360,
+        "category": "personal_care",
+        "amt": 29.84,
+        "lat": 40.3207,
+        "long": -110.4360,
         "merch_lat": 39.450498,
         "merch_long": -109.960431
     }

@@ -1,7 +1,8 @@
 import pandas as pd
 from flask import Flask, request, jsonify
-from src.pipelines import process_json_and_search
+from src.pipelines.Process_input import process_json_and_search
 from src.models.predictions import predict_fraud
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -32,11 +33,13 @@ def predict():
             return jsonify({"error": "No data provided"}), 400
         
         #df = pd.read_csv('data/cleaned_train.csv')
-        data = process_json_and_search(data[0])
+        data, exists = process_json_and_search(data[0])
+        print(data)
         
-        # Get prediction (probability score)
+        # Get prediction if this isn't a first time transaction (probability score)
         if not data.empty:
-            score = predict_fraud(data)
+            score = predict_fraud(data, exists)
+            
             
             return jsonify({
             "fraud_probability": float(score[-1]),  # Convert numpy float to Python float
