@@ -3,7 +3,6 @@
 # Data paths
 DATA_PATH_TRAIN = "data/cleaned_train.csv"
 DATA_PATH_TEST = "data/cleaned_test.csv"
-TEST_JSON = "test_data.json"
 
 # Model config
 MODEL_CONFIG = {
