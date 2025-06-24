@@ -1,20 +1,10 @@
 import pandas as pd
-import psycopg2
 from sqlalchemy import create_engine, text
-from src.config import DB_PARAMS
-
-#from src.models.predictions_testing import predict_fraud # TESTING FILE< IGNORE
-
-from src.models.predictions import predict_fraud
-
-
+from src.config import DB_URL
+from src.models import predict_fraud
 
 #SQL ALCHEMY
-password = DB_PARAMS['password']
-DB_URL = f'postgresql+psycopg2://postgres:{password}@localhost:5432/fraud'
 engine = create_engine(DB_URL)
-
-
 
 # Function to process JSON data and combine it with train_df data
 def process_json_and_search(json_data):
@@ -81,9 +71,6 @@ def process_json_and_search(json_data):
     return result, already_exists
 
 if __name__ == "__main__":
-    # Load train_df
-    #train_df = pd.read_csv('data/cleaned_train.csv')
-    
     # Example JSON data
     json_data =  {
         "trans_date_trans_time": "2020-06-25 12:14:33",
@@ -95,12 +82,9 @@ if __name__ == "__main__":
         "merch_lat": 39.450498,
         "merch_long": -109.960431
     }
-
     
     # Apply the function
     result, exists = process_json_and_search(json_data)
     print(f"\nResulting Frame after function\n:{result}",f"\nEntry in Database after running function 2: {exists}\n")
     result_frame = predict_fraud(result, exists)
     print(result_frame)
-    # Display the result
-    #print(result.tail(1))
