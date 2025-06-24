@@ -2,12 +2,11 @@ import psycopg2
 import os
 import pandas as pd
 from sqlalchemy import create_engine, text
-from src.config import DB_PARAMS
+from src.config import DB_PARAMS, DB_URL
 
 #  $env:Path += ";C:\Program Files\PostgreSQL\17\bin"
 
 #SQL ALCHEMY
-DB_URL = "postgresql+psycopg2://postgres:@localhost:5432/fraud"
 engine = create_engine(DB_URL)
 
 

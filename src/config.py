@@ -34,7 +34,7 @@ DB_PARAMS = {
     'host': 'localhost',
     'port': 5432
 }
-print(DB_PARAMS)
+DB_URL = f"postgresql+psycopg2://postgres:{DB_PARAMS['password']}@localhost:5432/fraud"
 
 
 # Prediction columns

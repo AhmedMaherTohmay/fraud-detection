@@ -1,8 +1,8 @@
 import pandas as pd
 import psycopg2
 from sqlalchemy import create_engine, text, MetaData, Table
+from src.config import DB_PARAMS, DB_URL
 
-DB_CONNECTION_STRING = "postgresql+psycopg2://postgres:@localhost:5432/fraud"
 
 FEATURE_LAKE_COLUMNS = [
     "date_index",
@@ -33,7 +33,7 @@ def insert_into_feature_lake(transformed_df):
     ensuring the date exists in dates. All wrapped in try/except.
     """
     try:
-        engine = create_engine(DB_CONNECTION_STRING)
+        engine = create_engine(DB_URL)
         
         # Clean and reindex columns
         df = transformed_df[FEATURE_LAKE_COLUMNS].copy()
