@@ -1,6 +1,7 @@
 import pandas as pd
 import psycopg2
 from sqlalchemy import create_engine, text
+from src.config import DB_PARAMS
 
 #from src.models.predictions_testing import predict_fraud # TESTING FILE< IGNORE
 
@@ -9,7 +10,8 @@ from src.models.predictions import predict_fraud
 
 
 #SQL ALCHEMY
-DB_URL = "postgresql+psycopg2://postgres:@localhost:5432/fraud"
+password = DB_PARAMS['password']
+DB_URL = f'postgresql+psycopg2://postgres:{password}@localhost:5432/fraud'
 engine = create_engine(DB_URL)
 
 
