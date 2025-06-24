@@ -1,7 +1,7 @@
 import pandas as pd
-import psycopg2
+import joblib
 from sqlalchemy import create_engine, text, MetaData, Table
-from src.config import DB_PARAMS, DB_URL
+from src.config import DB_URL, DATA_PATH_TRAIN
 
 
 FEATURE_LAKE_COLUMNS = [
@@ -79,4 +79,18 @@ def insert_into_feature_lake(transformed_df):
         
 
 if __name__ == "__main__":
-    pass
+    # Example usage
+    # Load a sample DataFrame (replace with actual transformed data)
+    df = pd.read_csv(DATA_PATH_TRAIN)
+    df['trans_date_trans_time'] = pd.to_datetime(df['trans_date_trans_time'])
+    pipeline = joblib.load("artifacts/preprocessing_pipeline.pkl")
+    transformed_df = pipeline.transform(df)
+    transformed_df.drop(columns=['is_fraud'], inplace=True, errors='ignore')
+    
+    # Re Add Timestamp to transformed_df
+    time_stamp = df["trans_date_trans_time"][0]
+    transaction = transformed_df.iloc[:500000]
+    transaction["time_stamp"] = time_stamp
+    transaction["date_index"] = time_stamp.date()
+    print(transaction.info())
+    insert_into_feature_lake(transaction)
