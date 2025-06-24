@@ -61,4 +61,4 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
 
 # curl -X POST http://127.0.0.1:5000/predict -H "Content-Type: application/json" -d @test_data.json
-# curl -X POST https://fraud-detection-production-f16f.up.railway.app/predict -H "Content-Type: application/json" -d @test_data.json
+# curl -X POST https://fraud-detection-app-evabfpebcyazfjeh.uaenorth-01.azurewebsites.net/predict -H "Content-Type: application/json" -d @test_data.json
