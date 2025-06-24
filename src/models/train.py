@@ -3,37 +3,29 @@ import pandas as pd
 import joblib
 import pickle
 import json
+from sqlalchemy import create_engine, text
 from sklearn.ensemble import IsolationForest
 from sklearn.model_selection import train_test_split
-from src.config import DATA_PATH_TRAIN
+from src.config import MODEL_PARAMS, DB_URL
+
+
+#SQL ALCHEMY
+engine = create_engine(DB_URL)
 
 def train_model():
-    
-    # Load and preprocess data
-    df = pd.read_csv(DATA_PATH_TRAIN)
-    pipeline = joblib.load("artifacts/preprocessing_pipeline.pkl")
-    features = pipeline.transform(df)
-    
-    # Split data
-    X = features.drop(columns=['is_fraud'])
-    y = features['is_fraud']
-    X_train, X_val, y_train, y_val = train_test_split(
-        X, y, test_size=0.2, random_state=42, stratify=y
-    )
-    
-    # Model parameters
-    params = {
-        'n_estimators': 100,
-        'max_samples': 'auto',
-        'contamination': 'auto',
-        'random_state': 42,
-        'verbose': 0
-    }
+    # Querying the Database
+    with engine.connect() as conn:
+        # Check For History of CC_NUM
+        transformed_df = pd.read_sql_query(text("""
+            SELECT *
+            FROM feature_lake;
+        """), conn)
+    transformed_df = transformed_df.drop(columns=['id', 'time_stamp', 'date_index'])
     
     # Train model
-    model = IsolationForest(**params)
-    model.fit(X_train)
-    scores = model.decision_function(X_train)
+    model = IsolationForest(**MODEL_PARAMS)
+    model.fit(transformed_df)
+    scores = model.decision_function(transformed_df)
     
     max_score = scores.max()
     min_score = scores.min()
@@ -48,7 +40,7 @@ def train_model():
     print(f"Model saved at {model_path}")
     
     # Return everything needed for evaluation
-    return model, X_train, y_train, X_val, y_val
+    return model
 
 if __name__ == "__main__":
     print("Training model...")
