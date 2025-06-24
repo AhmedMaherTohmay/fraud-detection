@@ -16,6 +16,14 @@ MODEL_CONFIG = {
     'THRESHOLD': 42.5
 }
 
+MODEL_PARAMS = {
+    'n_estimators': 100,
+    'max_samples': 'auto',
+    'contamination': 'auto',
+    'random_state': 42,
+    'verbose': 0
+}
+
 # Database config
 # config.py
 
