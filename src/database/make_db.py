@@ -106,7 +106,9 @@ def create_feature_lake():
         Column('category_personal_care', Integer),
         Column('category_shopping_net', Integer),
         Column('category_shopping_pos', Integer),
-        Column('category_travel', Integer)
+        Column('category_travel', Integer),
+        Column('fraud_score', Float)
+        
     )
 
     # Drop and recreate (order is important: drop child before parent!)

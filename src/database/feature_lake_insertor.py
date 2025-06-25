@@ -12,7 +12,7 @@ FEATURE_LAKE_COLUMNS = [
     "category_food_dining", "category_gas_transport", "category_grocery_net", "category_grocery_pos",
     "category_health_fitness", "category_home", "category_kids_pets", "category_misc_net",
     "category_misc_pos", "category_personal_care", "category_shopping_net",
-    "category_shopping_pos", "category_travel"
+    "category_shopping_pos", "category_travel", "fraud_score"
 ]
 
 def ensure_date_exists(engine, date_val):

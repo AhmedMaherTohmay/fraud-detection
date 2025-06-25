@@ -49,6 +49,7 @@ def predict_fraud(df, exists):
     transaction = transformed_df.tail(1)
     transaction["time_stamp"] = time_stamp
     transaction["date_index"] = time_stamp.date()
+    transaction["fraud_score"] = val_proba
     
     
     # Insert Feature Dataframe into feature_lake
