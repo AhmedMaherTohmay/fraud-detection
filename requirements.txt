@@ -11,7 +11,11 @@ matplotlib>=3.7.2
 pandas==2.2.2
 flasgger==0.9.5
 joblib
-
+dotenv
+sqlalchemy 
+pymysql
+certifi
+mysql-connector-python
 '''
 $env:Path += ";C:\Program Files\PostgreSQL\17\bin"
 '''
