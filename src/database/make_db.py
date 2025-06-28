@@ -1,88 +1,66 @@
-import psycopg2
+# make_db.py
+import pymysql
 from sqlalchemy import create_engine, MetaData, Table, Column, Boolean, Integer, Float, Date, DateTime, ForeignKey, text
 import insert_db
-import sql_test
 from src.config import DB_PARAMS, DB_URL
 
 
 def main():
     try:
-        # Connect to the fraud database
-        conn = psycopg2.connect(**DB_PARAMS)
+        conn = pymysql.connect(**DB_PARAMS)
         print("Connected to the database successfully.")
         cur = conn.cursor()
-        
-#______________________________________________________________________________________________________________________#
-            #CREATE THE DERNORMALISED HISRORY LAKE#
-#______________________________________________________________________________________________________________________#
 
-        # Drop existing table (if needed)
+        # Drop and recreate transactions table
         cur.execute("DROP TABLE IF EXISTS transactions;")
-
-        # Create a flat table
         cur.execute("""
             CREATE TABLE transactions (
                 cc_num BIGINT NOT NULL,
                 trans_date_trans_time TIMESTAMP NOT NULL,
                 category VARCHAR(50),
-                amt NUMERIC(12,2),
-                lat DOUBLE PRECISION,
-                long DOUBLE PRECISION,
-                merch_lat DOUBLE PRECISION,
-                merch_long DOUBLE PRECISION
+                amt DECIMAL(12,2),
+                lat DECIMAL(12,6),
+                `long` DECIMAL(12,6),
+                merch_lat DECIMAL(12,6),
+                merch_long DECIMAL(12,6)
             );
         """)
-
-        # Index for fast lookup by cc_num
         cur.execute("CREATE INDEX idx_ccnum ON transactions(cc_num);")
 
         conn.commit()
         cur.close()
         conn.close()
         print("Flat transactions table created with idx_ccnum for efficient querying by cc_num.")
-    
     except Exception as ex:
         print("Error during database setup:")
         print(ex)
-        
-        
-        
-#______________________________________________________________________________________________________________________#
-                    #CREATE THE NORMALISED FEATURE STORE#
-#______________________________________________________________________________________________________________________#
 
 
 def create_feature_store():
     try:
-        conn=psycopg2.connect(**DB_PARAMS)
-        cur=conn.cursor()
-        print("Connected To Database")
-        
-        cur.execute()
-        
-    
-    except:
-        print("Connection To Database Failed (feature_store)")
-        
+        conn = pymysql.connect(**DB_PARAMS)
+        cur = conn.cursor()
+        print("Connected To Database (feature_store)")
+        # TODO: Add actual SQL statements to create feature store tables
+        # cur.execute("""CREATE TABLE feature_store (...)""")
+        cur.close()
+        conn.close()
+    except Exception as e:
+        print("Connection to Database Failed (feature_store):", e)
 
-#______________________________________________________________________________________________________________________#
-                    #CREATE THE FEATURE LAKE#
-#______________________________________________________________________________________________________________________#
 
 def create_feature_lake():
     engine = create_engine(DB_URL)
     metadata = MetaData()
 
-    # Table for unique dates
     dates = Table(
         'dates', metadata,
         Column('date_index', Date, primary_key=True)
     )
 
-    # Feature table referencing dates
     feature_lake = Table(
         'feature_lake', metadata,
-        Column('id', Integer, primary_key=True, autoincrement=True),  # surrogate PK (fine to keep; helps future-proofing)
+        Column('id', Integer, primary_key=True, autoincrement=True),
         Column('date_index', Date, ForeignKey('dates.date_index', ondelete='CASCADE'), index=True),
         Column('time_stamp', DateTime),
         Column('last_hour_count', Float),
@@ -108,24 +86,19 @@ def create_feature_lake():
         Column('category_shopping_pos', Integer),
         Column('category_travel', Integer),
         Column('fraud_score', Float)
-        
     )
 
-    # Drop and recreate (order is important: drop child before parent!)
     with engine.begin() as conn:
         feature_lake.drop(conn, checkfirst=True)
         dates.drop(conn, checkfirst=True)
         metadata.create_all(conn)
         print("Tables in database after creation:",
-          conn.execute(
-              text("SELECT tablename FROM pg_tables WHERE schemaname='public'")
-          ).fetchall())
-    
+              conn.execute(
+                  text("SELECT table_name FROM information_schema.tables WHERE table_schema='public'")
+              ).fetchall())
 
 
 if __name__ == '__main__':
     main()
     insert_db.preprocess_and_copy(500_000)
-    sql_test.check_sql()
     create_feature_lake()
-    

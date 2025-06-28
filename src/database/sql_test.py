@@ -1,17 +1,13 @@
-import psycopg2
-import os
+import pymysql
 import pandas as pd
 from sqlalchemy import create_engine, text
 from src.config import DB_PARAMS, DB_URL
 
-#  $env:Path += ";C:\Program Files\PostgreSQL\17\bin"
-
 #SQL ALCHEMY
 engine = create_engine(DB_URL)
 
-
 def check_sql():
-    conn=psycopg2.connect(**DB_PARAMS)
+    conn=pymysql.connect(**DB_PARAMS)
     cur=conn.cursor()
     
     cur.execute(
@@ -28,7 +24,7 @@ def check_sql():
         print(row)
 
 def sql_command():
-    conn=psycopg2.connect(**DB_PARAMS)
+    conn=pymysql.connect(**DB_PARAMS)
     cur=conn.cursor()
     
     cur.execute(
@@ -46,7 +42,7 @@ def sql_command():
         print(row)
 
 def get_recent_transactions(cc_num):
-    conn=psycopg2.connect(**DB_PARAMS)
+    conn=pymysql.connect(**DB_PARAMS)
     cur=conn.cursor()
     external_ts = "2019-06-22 00:00:00"
     with conn.cursor() as cur:

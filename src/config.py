@@ -1,6 +1,7 @@
 # src/config.py
 import os
 from dotenv import load_dotenv
+import certifi
 
 # Get the absolute path to the root directory
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,16 +26,21 @@ MODEL_PARAMS = {
 }
 
 # Database config
-# config.py
-
 DB_PARAMS = {
-    'dbname': 'fraud',
-    'user': 'postgres',
-    'password': os.environ.get('DB_PASSWORD'),  # Add your real password here if needed
-    'host': 'localhost',
-    'port': 5432
+    'database': os.environ.get('DB_NAME'),
+    'user': os.environ.get('DB_USERNAME'),
+    'password': os.environ.get('DB_PASSWORD'),
+    'host': os.environ.get('DB_HOST'),
+    'port': 3306,
+    'ssl_ca': certifi.where(),  # Add SSL configuration
+    'ssl_verify_cert': True
 }
-DB_URL = f"postgresql+psycopg2://postgres:{DB_PARAMS['password']}@localhost:5432/fraud"
+
+# SQLAlchemy connection string
+DB_URL = (
+    f"mysql+pymysql://{DB_PARAMS['user']}:{DB_PARAMS['password']}@{DB_PARAMS['host']}:{DB_PARAMS['port']}/{DB_PARAMS['database']}"
+    f"?ssl_ca={DB_PARAMS['ssl_ca']}"
+)
 
 
 # Prediction columns
