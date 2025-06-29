@@ -9,6 +9,8 @@ A real-time system that detects suspicious credit card transactions using machin
 
 ## Quick Start Commands (if you're lazy~) ##
 
+# Don't forget to install the requirements again~!
+
 ## installing and starting monitoring services 
 1. python src/monitoring/setup.py install
 2. python src/monitoring/setup.py start
