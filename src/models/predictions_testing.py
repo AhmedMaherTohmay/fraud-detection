@@ -4,6 +4,9 @@ import joblib
 import json
 from src.config import DATA_PATH_TEST
 from src.database.feature_lake_insertor import insert_into_feature_lake
+import warnings
+
+warnings.filterwarnings("ignore")
 
 
 # Transform scores to make fraud cases have higher values
@@ -23,6 +26,7 @@ def transform_scores(scores, max_score, min_score):
     return normalized
 
 def predict_fraud(df, exists):
+    warnings.filterwarnings("ignore")
     # Load and preprocess data
     pipeline = joblib.load('../../artifacts/preprocessing_pipeline.pkl')
     transformed_df = pipeline.transform(df)
