@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import joblib
 import json
-from src.config import DATA_PATH_TEST
+from src.config import DATA_PATH_TRAIN
 from src.database.feature_lake_insertor import insert_into_feature_lake
 
 
@@ -67,7 +67,10 @@ def predict_fraud(df, exists):
 
 if __name__ == "__main__":
     # Inspect the transformed data
-    df = pd.read_csv(DATA_PATH_TEST)
+    df = pd.read_csv(DATA_PATH_TRAIN)
+    df['trans_date_trans_time'] = pd.to_datetime(df['trans_date_trans_time'])
+    df.drop(columns=['is_fraud'], inplace=True, errors='ignore')
+    df = df.iloc[:500000]
     exists = True
-    val_proba = predict_fraud(df)
+    val_proba = predict_fraud(df, exists)
     print(val_proba[-1])

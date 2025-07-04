@@ -1,7 +1,7 @@
 import pandas as pd
 from sqlalchemy import create_engine, text
 from src.config import DB_URL
-from src.models.predictions_testing import predict_fraud
+from src.models import predict_fraud
 
 #SQL ALCHEMY
 engine = create_engine(DB_URL)

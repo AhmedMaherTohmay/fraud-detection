@@ -2,7 +2,6 @@ import pandas as pd
 import joblib
 from sqlalchemy import create_engine, text
 from src.config import DB_URL, DATA_PATH_TRAIN
-from src.models import predict_fraud
 
 
 FEATURE_LAKE_COLUMNS = [
@@ -87,10 +86,6 @@ if __name__ == "__main__":
     pipeline = joblib.load("artifacts/preprocessing_pipeline.pkl")
     transformed_df = pipeline.transform(df)
     transformed_df.drop(columns=['is_fraud'], inplace=True, errors='ignore')
-    
-    # Add the fraud score column
-    scores = predict_fraud(transformed_df, exists=True)
-    transformed_df['fraud_score'] = scores
     
     # Re Add Timestamp to transformed_df
     time_stamp = df["trans_date_trans_time"][0]
