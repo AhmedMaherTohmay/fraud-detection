@@ -32,6 +32,14 @@ class AddAverageColumns(BaseEstimator, TransformerMixin):
         df['last_24h_count'] = grouped['amt'].rolling('24h').count().reset_index(level=0, drop=True)
         df['last_24h_avg'] = (df['last_24h_sum'] / df['last_24h_count']).round(2)
         
+        rolling_100_medians = (
+            grouped['amt']
+            .rolling(window=100, min_periods=1)
+            .median()
+            .reset_index(level=0, drop=True)
+        )
+        df['last_100_median'] = rolling_100_medians
+        
         # Reset index to original
         df.reset_index(inplace=True)
         df.index = original_index
@@ -39,9 +47,9 @@ class AddAverageColumns(BaseEstimator, TransformerMixin):
         # Fill NaN values (first transactions for each card)
         df['last_hour_avg'] = df['last_hour_avg'].fillna(0)
         df['last_24h_avg'] = df['last_24h_avg'].fillna(0)
-        
-        # Drop intermediate columns
-        df.drop(columns=['last_hour_sum', 'last_24h_sum'], inplace=True)
+        df['last_hour_sum'] = df['last_hour_sum'].fillna(0)
+        df['last_24h_sum'] = df['last_24h_sum'].fillna(0)
+        df['last_100_median'] = df['last_100_median'].fillna(0)
         
         return df
 
