@@ -30,7 +30,7 @@ MODEL_PARAMS = {
 DB_PARAMS = {
     'dbname': 'fraud',
     'user': 'postgres',
-    'password': os.environ.get('DB_PASSWORD'),  # Add your real password here if needed
+    'password': os.environ.get('P_DB_PASSWORD'),  # Add your real password here if needed
     'host': 'localhost',
     'port': 5432
 }

@@ -85,10 +85,13 @@ def create_feature_lake():
         Column('id', Integer, primary_key=True, autoincrement=True),  # surrogate PK (fine to keep; helps future-proofing)
         Column('date_index', Date, ForeignKey('dates.date_index', ondelete='CASCADE'), index=True),
         Column('time_stamp', DateTime),
+        Column('last_hour_sum', Float),
         Column('last_hour_count', Float),
         Column('last_hour_avg', Float),
+        Column('last_24h_sum', Float),
         Column('last_24h_count', Float),
         Column('last_24h_avg', Float),
+        Column('last_100_median', Float),
         Column('dist', Float),
         Column('dist_diff', Float),
         Column('D_Evening', Boolean),
