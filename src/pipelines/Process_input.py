@@ -24,9 +24,9 @@ def process_json_and_search(json_data):
             SELECT *
             FROM transactions
             WHERE cc_num = :ccnum
-            ORDER BY trans_date_trans_time DESC;
-            LIMIT 100
-        """), conn, params={"ccnum": cc_num, "external_ts": timestamp })
+            ORDER BY trans_date_trans_time DESC
+            LIMIT 100;
+        """), conn, params={"ccnum": cc_num})
         
         # Check if trans_date_trans_time for this cc_num already exists in table
         exists_query = conn.execute(
@@ -34,7 +34,7 @@ def process_json_and_search(json_data):
                 SELECT 1 FROM transactions
                 WHERE cc_num = :ccnum AND trans_date_trans_time = :trans_time
                 LIMIT 1
-            """), {"ccnum": cc_num}
+            """), {"ccnum": cc_num, "trans_time": timestamp}
         )
         already_exists = exists_query.fetchone() is not None
         print("Exists query\n:", exists_query)
