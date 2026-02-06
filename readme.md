@@ -39,9 +39,7 @@ This system implements a robust fraud detection engine that processes credit car
 >
 > _Add your architecture diagram to the repository and update the path below:_
 >
-> ```markdown
 > ![System Architecture](imgs/SystemArch.png)
-> ```
 
 The system comprises two primary workflows:
 
