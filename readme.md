@@ -316,4 +316,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Contact
 
-For questions or support, please open an issue or contact the maintainers at [your-email@domain.com].
+For questions or support, please open an issue or contact us.
