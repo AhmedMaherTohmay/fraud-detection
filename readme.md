@@ -1,3 +1,4 @@
+
 # Fraud Detection System
 
 A production-ready machine learning pipeline for real-time credit card fraud detection, featuring automated data drift monitoring, model retraining workflows, and comprehensive observability.
@@ -39,14 +40,12 @@ This system implements a robust fraud detection engine that processes credit car
 >
 > _Add your architecture diagram to the repository and update the path below:_
 >
-> ```markdown
 > ![System Architecture](imgs/SystemArch.png)
-> ```
 
 The system comprises two primary workflows:
 
-| Component              | Purpose                           | Technology                               |
-| ---------------------- | --------------------------------- | ---------------------------------------- |
+| Component                    | Purpose                           | Technology                               |
+| ---------------------------- | --------------------------------- | ---------------------------------------- |
 | **Inference Pipeline** | Real-time fraud scoring           | FastAPI, PostgreSQL, Custom Transformers |
 | **Training Pipeline**  | Model retraining & drift handling | Apache Airflow, MLflow, Evidently AI     |
 
@@ -74,13 +73,13 @@ Transactions arrive as JSON requests with the following structure:
 
 ### Feature Engineering Pipeline
 
-| Transformation           | Description                          | Output Features                                                                                                      |
-| ------------------------ | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| Transformation                 | Description                          | Output Features                                                                                                                    |
+| ------------------------------ | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
 | **Temporal Aggregation** | Rolling statistics over user history | `last_1h_count`, `last_1h_sum`, `last_1h_mean`, `last_24h_count`, `last_24h_sum`, `last_24h_mean`, `last_100_median` |
-| **Geospatial Analysis**  | Haversine distance calculations      | `distance_last_tx`, `distance_current_tx`, `avg_user_merchant_distance`                                              |
-| **Temporal Encoding**    | Time-of-day categorization           | `partofday_morning`, `partofday_afternoon`, `partofday_evening`                                                      |
-| **Categorical Encoding** | Merchant category one-hot encoding   | `category_*` (binary flags per category)                                                                             |
-| **Recency Feature**      | Time since last transaction          | `time_since_last_tx`                                                                                                 |
+| **Geospatial Analysis**  | Haversine distance calculations      | `distance_last_tx`, `distance_current_tx`, `avg_user_merchant_distance`                                                      |
+| **Temporal Encoding**    | Time-of-day categorization           | `partofday_morning`, `partofday_afternoon`, `partofday_evening`                                                              |
+| **Categorical Encoding** | Merchant category one-hot encoding   | `category_*` (binary flags per category)                                                                                         |
+| **Recency Feature**      | Time since last transaction          | `time_since_last_tx`                                                                                                             |
 
 ### Database Schema
 
@@ -111,8 +110,8 @@ Transactions arrive as JSON requests with the following structure:
 
 ### Machine Learning Models
 
-| Model                        | Type                           | Use Case                      |
-| ---------------------------- | ------------------------------ | ----------------------------- |
+| Model                              | Type                           | Use Case                      |
+| ---------------------------------- | ------------------------------ | ----------------------------- |
 | **Random Forest Classifier** | Supervised ensemble            | Primary fraud scoring         |
 | **Isolation Forest**         | Unsupervised anomaly detection | Novel fraud pattern detection |
 
@@ -244,8 +243,8 @@ Submit a transaction for fraud scoring.
 
 Access dashboards at `http://localhost:3000`
 
-| Dashboard             | Metrics                                                       |
-| --------------------- | ------------------------------------------------------------- |
+| Dashboard                   | Metrics                                                       |
+| --------------------------- | ------------------------------------------------------------- |
 | **Fraud Overview**    | Transaction volume, fraud rate, model confidence distribution |
 | **Model Performance** | Precision, recall, latency percentiles                        |
 | **Data Drift**        | Feature distribution shifts, PSI scores                       |
@@ -265,20 +264,21 @@ Access dashboards at `http://localhost:3000`
 ### Retraining Flow
 
 1. **Drift Detection** (Airflow DAG: `drift_monitor`)
+
    - Runs hourly statistical tests on `amt` and other critical features
    - Generates Evidently AI reports
    - Triggers retraining on significant drift
-
 2. **Data Preparation**
+
    - Extracts features from Feature Lake based on `date_index`
    - Applies identical transformations as inference pipeline
-
 3. **Model Training**
+
    - Trains both Random Forest and Isolation Forest
    - Hyperparameter tuning via Optuna
    - Registers best model to MLflow Model Registry
-
 4. **Deployment**
+
    - A/B testing setup for new models
    - Gradual traffic shifting
    - Automatic rollback on performance degradation
@@ -289,8 +289,8 @@ Access dashboards at `http://localhost:3000`
 
 **Source**: [Credit Card Transactions Fraud Detection Dataset](https://www.kaggle.com/datasets/kartik2112/fraud-detection) (Kaggle)
 
-| Attribute      | Value                     |
-| -------------- | ------------------------- |
+| Attribute            | Value                     |
+| -------------------- | ------------------------- |
 | **Size**       | 1M+ transactions          |
 | **Users**      | 1,000 customers           |
 | **Merchants**  | 800 merchants             |
