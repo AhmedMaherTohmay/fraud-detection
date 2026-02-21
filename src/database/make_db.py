@@ -2,7 +2,7 @@ import psycopg2
 from sqlalchemy import create_engine, MetaData, Table, Column, Boolean, Integer, Float, Date, DateTime, ForeignKey, text
 import insert_db
 import sql_test
-from src.config import DB_PARAMS, DB_URL
+from config.config import DB_PARAMS, DB_URL
 
 
 def main():

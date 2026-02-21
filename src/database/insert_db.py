@@ -1,6 +1,6 @@
 import psycopg2
 import os
-from src.config import DATA_PATH_TRAIN, DB_PARAMS
+from config.config import DATA_PATH_TRAIN, DB_PARAMS
 
 
 TEMP_FILE = "temp_batch.csv"  # File we create for COPY

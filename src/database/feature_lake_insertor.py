@@ -1,7 +1,7 @@
 import pandas as pd
 import joblib
 from sqlalchemy import create_engine, text
-from src.config import DB_URL, DATA_PATH_TRAIN
+from config.config import DB_URL, DATA_PATH_TRAIN
 
 
 FEATURE_LAKE_COLUMNS = [

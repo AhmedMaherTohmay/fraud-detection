@@ -1,6 +1,6 @@
 import mlflow
 from mlflow.tracking import MlflowClient
-from src.config import MODEL_NAME
+from config.config import MODEL_NAME
 
 def promote_to_production(version: int):
     """Promote specified model version to production.

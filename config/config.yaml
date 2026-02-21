@@ -1,0 +1,27 @@
+data:
+  train_path: data/cleaned_train.csv
+  test_path: data/cleaned_test.csv
+
+model:
+  name: fraud_isoforest
+  threshold: 42.5
+  params:
+    n_estimators: 100
+    max_samples: auto
+    contamination: auto
+    random_state: 42
+    verbose: 0
+
+features:
+  prediction_cols:
+    - cc_num
+    - trans_date_trans_time
+    - category
+    - amt
+    - lat
+    - long
+    - merch_lat
+    - merch_long
+
+  drift_features:
+    - amt

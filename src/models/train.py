@@ -6,7 +6,7 @@ import json
 from sqlalchemy import create_engine, text
 from sklearn.ensemble import IsolationForest
 from sklearn.model_selection import train_test_split
-from src.config import MODEL_PARAMS, DB_URL
+from config.config import MODEL_PARAMS, DB_URL
 
 
 #SQL ALCHEMY

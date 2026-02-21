@@ -2,7 +2,7 @@ import psycopg2
 import os
 import pandas as pd
 from sqlalchemy import create_engine, text
-from src.config import DB_PARAMS, DB_URL
+from config.config import DB_PARAMS, DB_URL
 
 #  $env:Path += ";C:\Program Files\PostgreSQL\17\bin"
 

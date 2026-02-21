@@ -6,7 +6,7 @@ from sklearn.metrics import (
     roc_auc_score, average_precision_score,
     confusion_matrix, classification_report
 )
-from src.config import DATA_PATH_TEST
+from config.config import DATA_PATH_TEST
 
 def log_metrics(model, X, y):
     """Evaluation metrics calculation"""

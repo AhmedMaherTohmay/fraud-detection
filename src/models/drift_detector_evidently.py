@@ -6,7 +6,7 @@ import pandas as pd
 import os
 from datetime import datetime
 from IPython.display import display, HTML
-from src.config import DRIFT_FEATURES
+from config.config import DRIFT_FEATURES
 
 def run_drift_report(train_df: pd.DataFrame, recent_df: pd.DataFrame, output_html: str = None):
     train = train_df[DRIFT_FEATURES].copy()

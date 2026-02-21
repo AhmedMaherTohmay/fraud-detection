@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import joblib
 import json
-from src.config import DATA_PATH_TRAIN
+from config.config import DATA_PATH_TRAIN
 from src.database.feature_lake_insertor import insert_into_feature_lake
 
 

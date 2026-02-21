@@ -1,6 +1,6 @@
 import pandas as pd
 from sqlalchemy import create_engine, text
-from src.config import DB_URL
+from config.config import DB_URL
 from src.models import predict_fraud
 
 #SQL ALCHEMY
